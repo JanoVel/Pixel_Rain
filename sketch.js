@@ -71,7 +71,7 @@ class RainDrop{
   constructor(_size){
     this.size = _size;
     this.end = random(horizon, height);// the Y position in which the object will restart
-    this.x = random(-80, width -10); // X position, has an offset to compensate for the noise
+    this.x = random(-80, width + 80); // X position, has an offset to compensate for the noise
     this.y = random(height); // Y position
     // Z position, defined as a value from 0 to 1 mapped from the distance between horizon and canvas height
     this.z = map(this.end, horizon, height, 0, 1) 
@@ -82,14 +82,14 @@ class RainDrop{
   update(){
     // if the Y position is less that the END position, then the drop keeps falling
     if(this.y < this.end){
-      this.x += noise(millis()/1000)*3; //we add noise to the X position to emulate wind
+      this.x += map(noise(millis()/1000), 0, 1, -1, 1)*2; //we add noise to the X position to emulate wind
       this.y += this.speed;
     } else{
     //else it creates a new RainSplash object on the END position
       rainSplashes.push(new RainSplash(this.x, this.y, this.z, (this.y / height) * 1));
       // values are reset      
       this.end = random(horizon, height);
-      this.x = random(-80, width -10);
+      this.x = random(-80, width + 80);
       this.y = 0;
       this.z = map(this.end, horizon, height, 0, 1);
       this.speed = map(this.end, 0, height, 1, maxSpeed);
